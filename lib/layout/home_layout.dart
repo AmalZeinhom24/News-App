@@ -1,10 +1,21 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_slider_drawer/flutter_slider_drawer.dart';
+import 'package:news/models/category_data.dart';
+import 'package:news/screens/drawer_screen.dart';
+import 'package:news/screens/home_screen.dart';
 import 'package:news/screens/tab_controller.dart';
 import 'package:news/shared/network/remote/api_manager.dart';
 
-class HomeLayout extends StatelessWidget {
+import '../screens/categories_screen.dart';
+
+class HomeLayout extends StatefulWidget {
   static const String routeName = 'home';
 
+  @override
+  State<HomeLayout> createState() => _HomeLayoutState();
+}
+
+class _HomeLayoutState extends State<HomeLayout> {
   @override
   Widget build(BuildContext context) {
     return SafeArea(
@@ -20,15 +31,16 @@ class HomeLayout extends StatelessWidget {
           leadingWidth: 20,
           backgroundColor: Color(0xFF02066F),
           elevation: 0,
+          iconTheme: IconThemeData(color: Colors.white),
           shape: OutlineInputBorder(
               borderRadius: BorderRadius.only(
                   bottomRight: Radius.circular(25),
                   bottomLeft: Radius.circular(25)),
               borderSide: BorderSide(color: Colors.transparent)),
-          leading: IconButton(
+          /*leading: IconButton(
             onPressed: () {},
             icon: Icon(Icons.list, color: Colors.white, size: 35,),
-          ),
+          ),*/
           title: Align(
             alignment: Alignment.topCenter,
             child: Text(
@@ -38,29 +50,27 @@ class HomeLayout extends StatelessWidget {
             ),
           ),
         ),
-        //Use FutureBuilder when get in future
-        body: FutureBuilder(
-          future: ApiManager.getSources(),
-          builder: (context, snapshot) {
-            if (snapshot.connectionState == ConnectionState.waiting) {
-              return Center(child: CircularProgressIndicator(
-                color: Color(0xFF02066F),
-              ));
-            }
-            if (snapshot.hasError) {
-              return Text('Something went wrong');
-            }
-            /*In case of the data returned correctly the statues will be 'ok'
-            So any other response we will not need it*/
-            if (snapshot.data?.status != 'ok') {
-              return Center(child: Text(snapshot.data!.message!));
-            }
-            //In case the sources returned, return an empty list []
-            var sources = snapshot.data?.sources ?? [];
-            return TabControllerScreen(sources);
-          },
-        ),
+        drawer: DrawerScreen(onDrawersSelected),
+        body: categoryData == null
+            ? CategoriesScreen(onCategoriesSelected)
+            : HomeScreen(categoryData!),
       ),
     ));
+  }
+
+  CategoryData? categoryData = null;
+
+  void onDrawersSelected(number) {
+    if (number == DrawerScreen.CATEGORIES) {
+      categoryData = null;
+    } else if (number == DrawerScreen.SETTINGS) {}
+    setState(() {
+      Navigator.pop(context);
+    });
+  }
+
+  void onCategoriesSelected(categorySelected) {
+    categoryData = categorySelected;
+    setState(() {});
   }
 }
