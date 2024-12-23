@@ -1,6 +1,10 @@
 class SourcesResponse {
-  //code & message was added manually
-  SourcesResponse({this.status, this.sources, this.code, this.message});
+  SourcesResponse({
+    this.status,
+    this.sources,
+    this.code,
+    this.message,
+  });
 
   SourcesResponse.fromJson(dynamic json) {
     status = json['status'];
@@ -15,9 +19,18 @@ class SourcesResponse {
   }
 
   String? status;
-  String? code; //In case of apiKey wasn't send
-  String? message; //In case of apiKey wasn't send
+  String? code;
+  String? message;
   List<Sources>? sources;
+
+  Map<String, dynamic> toJson() {
+    final map = <String, dynamic>{};
+    map['status'] = status;
+    if (sources != null) {
+      map['sources'] = sources?.map((v) => v.toJson()).toList();
+    }
+    return map;
+  }
 }
 
 class Sources {
@@ -48,4 +61,16 @@ class Sources {
   String? category;
   String? language;
   String? country;
+
+  Map<String, dynamic> toJson() {
+    final map = <String, dynamic>{};
+    map['id'] = id;
+    map['name'] = name;
+    map['description'] = description;
+    map['url'] = url;
+    map['category'] = category;
+    map['language'] = language;
+    map['country'] = country;
+    return map;
+  }
 }
