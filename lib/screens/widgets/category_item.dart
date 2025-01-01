@@ -23,18 +23,16 @@ class CategoryItem extends StatelessWidget {
         children: [
           Image.asset(
             categoryData.image,
-            height: 140,
+            height: 120,
           ),
           Expanded(
             child: Container(
-              child: Center(
-                child: Text(
-                  categoryData.title,
-                  style: TextStyle(
-                      fontSize: 22,
-                      fontWeight: FontWeight.bold,
-                      color: Colors.white),
-                ),
+              child: Text(
+                categoryData.title,
+                style: TextStyle(
+                    fontSize: 22,
+                    fontWeight: FontWeight.bold,
+                    color: Colors.white),
               ),
             ),
           ),

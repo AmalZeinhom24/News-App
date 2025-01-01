@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:news/models/category_data.dart';
-import 'package:news/screens/category_item.dart';
+import 'package:news/screens/widgets/category_item.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class CategoriesScreen extends StatelessWidget {
   Function onCategorySelect;
@@ -8,13 +9,13 @@ class CategoriesScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    var categories = CategoryData.getCategories();
+    var categories = CategoryData.getCategories(context);
     return Padding(
       padding: const EdgeInsets.all(10.0),
       child: Column(
         children: [
           Text(
-            'Stay in the Know with news you care about',
+            AppLocalizations.of(context)!.quote,
             style: TextStyle(fontWeight: FontWeight.bold, fontSize: 25),
           ),
           SizedBox(height: 10),

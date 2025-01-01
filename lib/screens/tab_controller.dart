@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:news/models/SourcesResponse.dart';
-import 'package:news/screens/news_card.dart';
-import 'package:news/screens/tab_item.dart';
+import 'package:news/screens/details_screen.dart';
+import 'package:news/screens/widgets/news_card.dart';
+import 'package:news/screens/widgets/tab_item.dart';
 import 'package:news/shared/network/remote/api_manager.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class TabControllerScreen extends StatefulWidget {
   List<Sources> sources;
@@ -35,9 +37,10 @@ class _TabControllerScreenState extends State<TabControllerScreen> {
                 .map((source) => Tab(
                       child: TabItem(
                           source,
-                          /*to know which item is selected, use indexOf,
-                          which needs source & return int,
-                           that means return the source' index*/
+                          //to know which item is selected, use indexOf,
+                        //  which needs source & return int,
+                         //  that means return the source' index
+
                           widget.sources.indexOf(source) == selectedIndex
                               ? true
                               : false),
@@ -58,16 +61,22 @@ class _TabControllerScreenState extends State<TabControllerScreen> {
             if (snapshot.hasError) {
               return Column(
                 children: [
-                  Text(snapshot.data?.message ?? 'Something went wrong'),
-                  TextButton(onPressed: () {}, child: const Text('Try again!'))
+                  Text(snapshot.data?.message ??
+                      AppLocalizations.of(context)!.error),
+                  TextButton(
+                      onPressed: () {},
+                      child: Text(AppLocalizations.of(context)!.tryAgain))
                 ],
               );
             }
             if (snapshot.data?.status != 'ok') {
               return Column(
                 children: [
-                  Text(snapshot.data?.message ?? 'Something went wrong'),
-                  TextButton(onPressed: () {}, child: const Text('Try again!'))
+                  Text(snapshot.data?.message ??
+                      AppLocalizations.of(context)!.error),
+                  TextButton(
+                      onPressed: () {},
+                      child: Text(AppLocalizations.of(context)!.tryAgain))
                 ],
               );
             }
@@ -77,7 +86,12 @@ class _TabControllerScreenState extends State<TabControllerScreen> {
               child: ListView.builder(
                 itemCount: news.length,
                 itemBuilder: (context, index) {
-                  return NewsCard(news[index]);
+                  return InkWell(
+                      onTap: () {
+                        Navigator.pushNamed(context, DetailsScreen.routeName,
+                            arguments: news[index]);
+                      },
+                      child: NewsCard(news[index]));
                 },
               ),
             );

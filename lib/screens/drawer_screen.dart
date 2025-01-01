@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_slider_drawer/flutter_slider_drawer.dart';
+import 'package:news/screens/settings_screen.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+
 
 class DrawerScreen extends StatelessWidget {
   Function onDrawerSelected;
@@ -7,9 +9,6 @@ class DrawerScreen extends StatelessWidget {
   static const int HOME = 2;
   static const int CATEGORIES = 2;
   static const int SETTINGS = 3;
-
-  final GlobalKey<SliderDrawerState> _sliderDrawerKey =
-      GlobalKey<SliderDrawerState>();
 
   @override
   Widget build(BuildContext context) {
@@ -20,7 +19,7 @@ class DrawerScreen extends StatelessWidget {
           ListTile(
               leading: Icon(Icons.home),
               title: Text(
-                'Home',
+                AppLocalizations.of(context)!.home,
                 style: TextStyle(fontWeight: FontWeight.w600),
               ),
               onTap: () {
@@ -28,17 +27,17 @@ class DrawerScreen extends StatelessWidget {
               }),
           ListTile(
               leading: Icon(Icons.list),
-              title: Text('Categories',
+              title: Text(AppLocalizations.of(context)!.categories,
                   style: TextStyle(fontWeight: FontWeight.w600)),
               onTap: () {
                 onDrawerSelected(CATEGORIES);
               }),
           ListTile(
               leading: Icon(Icons.settings),
-              title: Text('Settings',
+              title: Text(AppLocalizations.of(context)!.settings,
                   style: TextStyle(fontWeight: FontWeight.w600)),
               onTap: () {
-                onDrawerSelected(SETTINGS);
+               Navigator.pushNamed(context, SettingsTab.routeName);
               }),
         ],
       ),
